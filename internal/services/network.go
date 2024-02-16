@@ -1,9 +1,9 @@
 package services
 
 import (
-	"encoding/json"
 	"github.com/IlyaZayats/shopus/internal/entity"
 	"github.com/IlyaZayats/shopus/internal/interfaces"
+	"strconv"
 )
 
 type NetworkService struct {
@@ -16,20 +16,16 @@ func NewNetworkService(repo interfaces.NetworkRepository) (*NetworkService, erro
 	}, nil
 }
 
-func (s *NetworkService) GetNetworks() ([]map[string]interface{}, error) {
+func (s *NetworkService) GetNetworks() ([]map[string]string, error) {
 	networks, err := s.repo.GetNetworks()
 	if err != nil {
 		return nil, err
 	}
-	var networksSlice []map[string]interface{}
+	var networksSlice []map[string]string
 	for _, item := range networks {
-		tmpByte, err := json.Marshal(item)
-		if err != nil {
-			return nil, err
-		}
-		var tmpMap map[string]interface{}
-		if err := json.Unmarshal(tmpByte, &tmpMap); err != nil {
-			return nil, err
+		tmpMap := map[string]string{
+			"id":   strconv.Itoa(item.Id),
+			"name": item.Name,
 		}
 		networksSlice = append(networksSlice, tmpMap)
 	}

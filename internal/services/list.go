@@ -1,10 +1,10 @@
 package services
 
 import (
-	"encoding/json"
 	"github.com/IlyaZayats/shopus/internal/entity"
 	"github.com/IlyaZayats/shopus/internal/interfaces"
 	"github.com/IlyaZayats/shopus/internal/requests"
+	"strconv"
 )
 
 type ListService struct {
@@ -17,20 +17,24 @@ func NewListService(repo interfaces.ListRepository) (*ListService, error) {
 	}, nil
 }
 
-func (s *ListService) GetLists() ([]map[string]interface{}, error) {
+func (s *ListService) GetLists() ([]map[string]string, error) {
 	lists, err := s.repo.GetLists()
 	if err != nil {
 		return nil, err
 	}
-	var listsSlice []map[string]interface{}
+	var listsSlice []map[string]string
 	for _, item := range lists {
-		tmpByte, err := json.Marshal(item)
-		if err != nil {
-			return nil, err
-		}
-		var tmpMap map[string]interface{}
-		if err := json.Unmarshal(tmpByte, &tmpMap); err != nil {
-			return nil, err
+		tmpMap := map[string]string{
+			"id":             strconv.Itoa(item.Id),
+			"dealer_id":      strconv.Itoa(item.DealerId),
+			"name":           item.Name,
+			"price":          strconv.Itoa(item.Price),
+			"amount":         strconv.Itoa(item.Amount),
+			"created_at":     item.CreatedAt,
+			"info":           item.Info,
+			"carrier":        item.Carrier,
+			"contact_person": item.ContactPerson,
+			"note":           item.Note,
 		}
 		listsSlice = append(listsSlice, tmpMap)
 	}

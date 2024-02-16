@@ -1,9 +1,9 @@
 package services
 
 import (
-	"encoding/json"
 	"github.com/IlyaZayats/shopus/internal/entity"
 	"github.com/IlyaZayats/shopus/internal/interfaces"
+	"strconv"
 )
 
 type DealerService struct {
@@ -16,20 +16,17 @@ func NewDealerService(repo interfaces.DealerRepository) (*DealerService, error) 
 	}, nil
 }
 
-func (s *DealerService) GetDealers() ([]map[string]interface{}, error) {
+func (s *DealerService) GetDealers() ([]map[string]string, error) {
 	dealers, err := s.repo.GetDealers()
 	if err != nil {
 		return nil, err
 	}
-	var dealersSlice []map[string]interface{}
+	var dealersSlice []map[string]string
 	for _, item := range dealers {
-		tmpByte, err := json.Marshal(item)
-		if err != nil {
-			return nil, err
-		}
-		var tmpMap map[string]interface{}
-		if err := json.Unmarshal(tmpByte, &tmpMap); err != nil {
-			return nil, err
+		tmpMap := map[string]string{
+			"id":         strconv.Itoa(item.Id),
+			"network_id": strconv.Itoa(item.NetworkId),
+			"name":       item.Name,
 		}
 		dealersSlice = append(dealersSlice, tmpMap)
 	}
