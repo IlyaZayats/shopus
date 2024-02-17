@@ -21,7 +21,7 @@ func (s *DealerService) GetDealers() ([]map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	var dealersSlice []map[string]string
+	dealersSlice := []map[string]string{}
 	for _, item := range dealers {
 		tmpMap := map[string]string{
 			"id":         strconv.Itoa(item.Id),

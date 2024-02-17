@@ -22,7 +22,7 @@ func (s *ListService) GetLists() ([]map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	var listsSlice []map[string]string
+	listsSlice := []map[string]string{}
 	for _, item := range lists {
 		tmpMap := map[string]string{
 			"id":             strconv.Itoa(item.Id),

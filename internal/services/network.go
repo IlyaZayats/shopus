@@ -21,7 +21,7 @@ func (s *NetworkService) GetNetworks() ([]map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	var networksSlice []map[string]string
+	networksSlice := []map[string]string{}
 	for _, item := range networks {
 		tmpMap := map[string]string{
 			"id":   strconv.Itoa(item.Id),
